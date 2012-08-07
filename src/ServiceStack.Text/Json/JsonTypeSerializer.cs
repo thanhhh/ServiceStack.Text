@@ -23,6 +23,11 @@ namespace ServiceStack.Text.Json
     {
         public static ITypeSerializer Instance = new JsonTypeSerializer();
 
+        public bool IncludeNullValues
+        {
+            get { return JsConfig.IncludeNullValues; }
+        }
+
         public string TypeAttrInObject { get { return "{\"__type\":"; } }
 
         public static readonly bool[] WhiteSpaceFlags = new bool[(int)' ' + 1];
@@ -128,13 +133,13 @@ namespace ServiceStack.Text.Json
 
         public void WriteTimeSpan(TextWriter writer, object oTimeSpan)
         {
-            writer.Write(DateTimeSerializer.ToXsdTimeSpanString((TimeSpan)oTimeSpan));
+            WriteRawString(writer, DateTimeSerializer.ToXsdTimeSpanString((TimeSpan)oTimeSpan));
         }
 
         public void WriteNullableTimeSpan(TextWriter writer, object oTimeSpan)
         {
             if (oTimeSpan == null) return;
-            writer.Write(DateTimeSerializer.ToXsdTimeSpanString((TimeSpan?)oTimeSpan));
+            WriteRawString(writer, DateTimeSerializer.ToXsdTimeSpanString((TimeSpan?)oTimeSpan));
         }
 
         public void WriteGuid(TextWriter writer, object oValue)
